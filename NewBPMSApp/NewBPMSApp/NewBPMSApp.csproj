@@ -13,6 +13,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="IServices\" />
+    <Compile Update="Views\ContractsCheckPage.xaml.cs">
+      <DependentUpon>ContractsCheckPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Views\ContractsCheckPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

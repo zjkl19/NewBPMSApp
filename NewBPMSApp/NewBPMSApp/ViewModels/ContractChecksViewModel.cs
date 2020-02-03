@@ -19,7 +19,7 @@ namespace NewBPMSApp.ViewModels
         {
             Title = "Browse";
             Items = new ObservableCollection<Contract>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadContractChecksCommand());
+            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
             //MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
             //{
@@ -29,7 +29,7 @@ namespace NewBPMSApp.ViewModels
             //});
         }
 
-        async Task ExecuteLoadContractChecksCommand()
+        async Task ExecuteLoadItemsCommand()
         {
             if (IsBusy)
                 return;

@@ -47,5 +47,14 @@ namespace NewBPMSApp.Views
             if (viewModel.Items.Count == 0)
                 viewModel.LoadItemsCommand.Execute(null);
         }
+
+        async void OnConfirmButton_Clicked(object sender, EventArgs e)
+        {
+
+            var thisClickedButton = sender as Button;
+            var contract = (Contract)thisClickedButton.CommandParameter;
+            await viewModel.DataStore.UpdateItemAsync(contract);
+            //await Navigation.PushAsync(new ProcedurePage(new ProcedureViewModel(cmprojectId)));
+        }
     }
 }

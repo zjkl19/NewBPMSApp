@@ -1,6 +1,7 @@
 ﻿using NewBPMSApp.IServices;
 using NewBPMSApp.Models;
 using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -15,6 +16,9 @@ namespace NewBPMSApp.Services
         HttpClient client;
         ContractCheck viewModels;
         IEnumerable<Contract> items;
+
+        RestClient client1;
+        RestRequest request;
 
         public ContractCheckDataStore()
         {
@@ -48,6 +52,31 @@ namespace NewBPMSApp.Services
             }
 
             return null;
+        }
+
+        public async Task<bool> UpdateItemAsync(Contract item)
+        {
+            if (item == null || item.Id == null || !IsConnected)
+                return false;
+
+            var serializedItem = JsonConvert.SerializeObject(item.Id);
+            var buffer = Encoding.UTF8.GetBytes(serializedItem);
+            var byteContent = new ByteArrayContent(buffer);
+
+            string k = $"api/Contract/{item.Id}";
+
+            //var response = await client.PutAsync(new Uri($"api/Contract/{item.Id}"), byteContent);
+
+            client1 = new RestClient(App.BackendUrl);
+            request = new RestRequest($"/api/Contract/{item.Id}", Method.PUT);
+            //request.AddParameter("Id", item.Id);
+            var resp =client1.Execute(request);
+
+            var v = resp.Content;
+
+
+            return true;
+            //return response.IsSuccessStatusCode;
         }
     }
 }

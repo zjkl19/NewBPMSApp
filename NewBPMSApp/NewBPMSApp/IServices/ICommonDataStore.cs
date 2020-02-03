@@ -13,5 +13,7 @@ namespace NewBPMSApp.IServices
     {
         Task<T> GetItemAsync(Guid id);
         Task<IEnumerable<T>> GetItemsAsync(bool forceRefresh = false);
+
+        Task<bool> UpdateItemAsync(T item);
     }
 }

@@ -26,8 +26,13 @@ namespace NewBPMSApp
                 DependencyService.Register<MockDataStore>();
             else
                 DependencyService.Register<ContractCheckDataStore>();
-                //DependencyService.Register<AzureDataStore>();
-            MainPage = new AppShell();
+            //DependencyService.Register<AzureDataStore>();
+
+            DependencyService.Register<LoginDataStore>();
+
+            MainPage = new LoginPage();
+
+            //MainPage = new AppShell();
         }
 
         protected override void OnStart()

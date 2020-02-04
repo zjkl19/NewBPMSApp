@@ -56,21 +56,45 @@ namespace NewBPMSApp.Views
 
         async void OnConfirmButton_Clicked(object sender, EventArgs e)
         {
-
             var thisClickedButton = sender as Button;
             var contract = (Contract)thisClickedButton.CommandParameter;
+
+            contract.CheckStatus = CheckStatus.Checked;
 
             var result=await viewModel.DataStore.UpdateItemAsync(contract);
 
             if(result)
             {
-                await DisplayAlert("操作", "成功校核！", "OK");
+                await DisplayAlert("服务器返回消息", "成功校核！", "确认");
             }
             else
             {
-                await DisplayAlert("操作", "校核失败！", "OK");
+                await DisplayAlert("服务器返回消息", "校核失败！", "确认");
             }
             
+            viewModel.LoadItemsCommand.Execute(null);
+        }
+
+        async void OnRestoreButton_Clicked(object sender, EventArgs e)
+        {
+            var thisClickedButton = sender as Button;
+            var contract = (Contract)thisClickedButton.CommandParameter;
+
+            contract.CheckStatus = CheckStatus.NotChecked;
+            contract.SubmitStatus = (int)SubmitStatus.NotSubmitted;
+            contract.ReviewStatus = (int)ReviewStatus.NotReviewed;
+            contract.FinishStatus = (int)FinishStatus.NotFinished;
+
+            var result = await viewModel.DataStore.UpdateItemAsync(contract);
+
+            if (result)
+            {
+                await DisplayAlert("服务器返回消息", "成功回退！", "确认");
+            }
+            else
+            {
+                await DisplayAlert("服务器返回消息", "校核回退！", "确认");
+            }
 
             viewModel.LoadItemsCommand.Execute(null);
         }

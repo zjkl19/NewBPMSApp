@@ -59,23 +59,23 @@ namespace NewBPMSApp.Services
             if (item == null || item.Id == null || !IsConnected)
                 return false;
 
-            var serializedItem = JsonConvert.SerializeObject(item.Id);
+            var serializedItem = JsonConvert.SerializeObject(item);
             var buffer = Encoding.UTF8.GetBytes(serializedItem);
             var byteContent = new ByteArrayContent(buffer);
-
-            string k = $"api/Contract/{item.Id}";
 
             //var response = await client.PutAsync(new Uri($"api/Contract/{item.Id}"), byteContent);
 
             client1 = new RestClient(App.BackendUrl);
             request = new RestRequest($"/api/Contract/{item.Id}", Method.PUT);
+            request.AddJsonBody(item);
+            //request.AddHeader("Content-type", "application/json");
             //request.AddParameter("Id", item.Id);
             var resp =client1.Execute(request);
 
-            var v = resp.Content;
+            //var v = resp.Content;
 
 
-            return true;
+            return resp.IsSuccessful;
             //return response.IsSuccessStatusCode;
         }
     }

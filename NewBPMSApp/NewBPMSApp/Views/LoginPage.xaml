@@ -21,6 +21,8 @@
             <Entry  
                 x:Name="PasswordEntry"
                 IsPassword="true"  Placeholder="Password"/>
+            <CheckBox x:Name="RememberMeCheckBox"/>
+            <Label Text="记住我？"/>
             <Button Margin="0,10,0,0" Text="登陆"
                                     Clicked="OnLoginButton_Clicked"
                                     BackgroundColor="{StaticResource Primary}"

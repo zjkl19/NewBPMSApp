@@ -21,6 +21,12 @@ namespace NewBPMSApp.Views
             InitializeComponent();
 
             BindingContext = viewModel = new ContractChecksViewModel();
+
+            // Subscribe to a message (which the ViewModel has also subscribed to) to display an alert
+            MessagingCenter.Subscribe<ContractsCheckPage, string>(this, "确认成功！", async (sender, arg) =>
+            {
+                await DisplayAlert("Message received", "arg=" + arg, "OK");
+            });
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
@@ -53,8 +59,20 @@ namespace NewBPMSApp.Views
 
             var thisClickedButton = sender as Button;
             var contract = (Contract)thisClickedButton.CommandParameter;
-            await viewModel.DataStore.UpdateItemAsync(contract);
-            //await Navigation.PushAsync(new ProcedurePage(new ProcedureViewModel(cmprojectId)));
+
+            var result=await viewModel.DataStore.UpdateItemAsync(contract);
+
+            if(result)
+            {
+                await DisplayAlert("操作", "成功校核！", "OK");
+            }
+            else
+            {
+                await DisplayAlert("操作", "校核失败！", "OK");
+            }
+            
+
+            viewModel.LoadItemsCommand.Execute(null);
         }
     }
 }

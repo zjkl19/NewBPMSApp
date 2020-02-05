@@ -68,6 +68,9 @@ namespace NewBPMSApp.Services
             client1 = new RestClient(App.BackendUrl);
             request = new RestRequest($"/api/Contract/{item.Id}", Method.PUT);
             request.AddJsonBody(item);
+
+            request.AddCookie(App.CookieName, App.CookieValue);
+
             //request.AddHeader("Content-type", "application/json");
             //request.AddParameter("Id", item.Id);
             var resp =client1.Execute(request);

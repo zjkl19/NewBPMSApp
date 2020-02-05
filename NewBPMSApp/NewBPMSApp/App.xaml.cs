@@ -22,7 +22,8 @@ namespace NewBPMSApp
         public static string EmailFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Email.txt");
         public static string PasswordFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Password.txt");
         public static string RememberMeFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RememberMe.txt");
-
+        public static string CookieName { get; set; }
+        public static string CookieValue { get; set; }
 
 
         public App()

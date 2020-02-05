@@ -41,6 +41,8 @@ namespace NewBPMSApp.Services
 
             var resp = client.Execute(request);
 
+            App.CookieName = resp.Cookies[0].Name.ToString();
+            App.CookieValue = resp.Cookies[0].Value.ToString();
             //var v = resp.Content;
 
             return resp.IsSuccessful;

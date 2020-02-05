@@ -37,6 +37,9 @@
         <Tab Title="校核" Icon="tab_feed.png">
             <ShellContent ContentTemplate="{DataTemplate local:ContractsCheckPage}" />
         </Tab>
+        <Tab Title="审核" Icon="tab_feed.png">
+            <ShellContent ContentTemplate="{DataTemplate local:ContractsReviewPage}" />
+        </Tab>
         <Tab Title="About" Icon="tab_about.png">
             <ShellContent ContentTemplate="{DataTemplate local:AboutPage}" />
         </Tab>

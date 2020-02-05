@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="NewBPMSApp.Views.ContractsReviewPage"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <x:Double x:Key="dataSize">13</x:Double>
+            <Color x:Key="Primary">#2196F3</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <StackLayout Padding="0, 50, 0, 0">
+
+            <ListView x:Name="ContractsListView"
+                      ItemsSource="{Binding Items}"
+                      VerticalOptions="FillAndExpand"
+                      HasUnevenRows="true"
+                      RefreshCommand="{Binding LoadItemsCommand}"
+                      IsPullToRefreshEnabled="true"
+                      IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                      CachingStrategy="RecycleElement"
+                      ItemSelected="OnItemSelected"
+                >
+                <d:ListView.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>First Item</x:String>
+                        <x:String>Second Item</x:String>
+                        <x:String>Third Item</x:String>
+                        <x:String>Fourth Item</x:String>
+                        <x:String>Fifth Item</x:String>
+                        <x:String>Sixth Item</x:String>
+                    </x:Array>
+                </d:ListView.ItemsSource>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding ContractViewModel.No,StringFormat='合同编号 {0}'}" 
+                                    d:Text="{Binding .}"
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemTextStyle}" 
+                                    FontSize="16" />
+                                <Label Text="{Binding ContractViewModel.Name,StringFormat='合同名称 {0}'}"
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemTextStyle}" 
+                                    FontSize="{StaticResource dataSize}" />
+                                <Label Text="{Binding ContractViewModel.UserName,StringFormat='负责人 {0}'}"
+                                    Style="{DynamicResource ListItemTextStyle}" 
+                                    FontSize="{StaticResource dataSize}" />
+                                <Button Margin="0,10,0,0" Text="确认"
+                                    Clicked="OnConfirmButton_Clicked"
+                                    CommandParameter="{Binding ContractViewModel}"
+                                    BackgroundColor="{StaticResource Primary}"
+                                    TextColor="White" />
+                                <Button Margin="0,10,0,0" Text="回退"
+                                    Clicked="OnRestoreButton_Clicked"
+                                    CommandParameter="{Binding ContractViewModel}"
+                                    BackgroundColor="Red"
+                                    TextColor="White" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

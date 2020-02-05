@@ -8,22 +8,21 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-
 namespace NewBPMSApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ContractsCheckPage : ContentPage
+    public partial class ContractsReviewPage : ContentPage
     {
-        ContractChecksViewModel viewModel;
+        ContractReviewsViewModel viewModel;
 
-        public ContractsCheckPage()
+        public ContractsReviewPage()
         {
             InitializeComponent();
 
-            BindingContext = viewModel = new ContractChecksViewModel();
+            BindingContext = viewModel = new ContractReviewsViewModel();
 
-            // Subscribe to a message (which the ViewModel has also subscribed to) to display an alert
-            MessagingCenter.Subscribe<ContractsCheckPage, string>(this, "确认成功！", async (sender, arg) =>
+            // Subscribe to a message (which te ViewModel has also subscribed to) to display an alert
+            MessagingCenter.Subscribe<ContractsReviewPage, string>(this, "确认成功！", async (sender, arg) =>
             {
                 await DisplayAlert("Message received", "arg=" + arg, "OK");
             });
@@ -31,7 +30,7 @@ namespace NewBPMSApp.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var item = args.SelectedItem as Contract;
+            var item = args.SelectedItem as DetailsContract;
             if (item == null)
                 return;
 
@@ -59,11 +58,11 @@ namespace NewBPMSApp.Views
             var thisClickedButton = sender as Button;
             var contract = (Contract)thisClickedButton.CommandParameter;
 
-            contract.CheckStatus = CheckStatus.Checked;
+            contract.ReviewStatus = ReviewStatus.Reviewed;
 
-            var result=await viewModel.DataStore.UpdateItemAsync(contract);
+            var result = await viewModel.DataStore.UpdateItemAsync(contract);
 
-            if(result)
+            if (result)
             {
                 await DisplayAlert("服务器返回消息", "成功校核！", "确认");
             }
@@ -71,7 +70,7 @@ namespace NewBPMSApp.Views
             {
                 await DisplayAlert("服务器返回消息", "校核失败！", "确认");
             }
-            
+
             viewModel.LoadItemsCommand.Execute(null);
         }
 
@@ -80,8 +79,8 @@ namespace NewBPMSApp.Views
             var thisClickedButton = sender as Button;
             var contract = (Contract)thisClickedButton.CommandParameter;
 
-            contract.CheckStatus = CheckStatus.NotChecked;
             contract.SubmitStatus = (int)SubmitStatus.NotSubmitted;
+            contract.CheckStatus = CheckStatus.NotChecked;
             contract.ReviewStatus = (int)ReviewStatus.NotReviewed;
             contract.FinishStatus = (int)FinishStatus.NotFinished;
 

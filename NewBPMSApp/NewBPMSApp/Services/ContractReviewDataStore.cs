@@ -12,48 +12,49 @@ using Xamarin.Essentials;
 
 namespace NewBPMSApp.Services
 {
-    public class ContractCheckDataStore : ICommonDataStore<Contract>
+    public class ContractReviewDataStore : IContractReviewDataStore<DetailsContract,Contract>
     {
         HttpClient client;
-        ContractCheck viewModels;
-        IEnumerable<Contract> items;
+        ContractReview viewModels;
+        IEnumerable<DetailsContract> items;
 
         RestClient client1;
         RestRequest request;
 
-        public ContractCheckDataStore()
+        public ContractReviewDataStore()
         {
             client = new HttpClient();
             client.BaseAddress = new Uri($"{App.BackendUrl}/");
 
-            viewModels = new ContractCheck();
+            viewModels = new ContractReview();
 
-            items = new List<Contract>();
+            items = new List<DetailsContract>();
         }
 
         bool IsConnected => Connectivity.NetworkAccess == NetworkAccess.Internet;
-        public async Task<IEnumerable<Contract>> GetItemsAsync(bool forceRefresh = false)
+        public async Task<IEnumerable<DetailsContract>> GetItemsAsync(bool forceRefresh = false)
         {
             if (forceRefresh && IsConnected)
             {
-                var json = await client.GetStringAsync($"api/CheckContract");
-                viewModels = await Task.Run(() => JsonConvert.DeserializeObject<ContractCheck>(json));
-                items = viewModels.ContractViewModels;
+                var json = await client.GetStringAsync($"api/ReviewContract");
+                viewModels = await Task.Run(() => JsonConvert.DeserializeObject<ContractReview>(json));
+                items = viewModels.DetailsContractViewModels;
             }
 
             return items;
         }
 
-        public async Task<Contract> GetItemAsync(Guid id)
-        {
-            if (id != null && IsConnected)
-            {
-                var json = await client.GetStringAsync($"api/item/{id}");
-                return await Task.Run(() => JsonConvert.DeserializeObject<Contract>(json));
-            }
+        
+        //public async Task<Contract> GetItemAsync(Guid id)
+        //{
+        //    if (id != null && IsConnected)
+        //    {
+        //        var json = await client.GetStringAsync($"api/item/{id}");
+        //        return await Task.Run(() => JsonConvert.DeserializeObject<Contract>(json));
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
 
         public async Task<bool> UpdateItemAsync(Contract item)
         {
@@ -69,7 +70,7 @@ namespace NewBPMSApp.Services
             //var response = await client.PutAsync(new Uri($"api/Contract/{item.Id}"), byteContent);
 
             client1 = new RestClient(App.BackendUrl);
-            request = new RestRequest($"/api/CheckContract/{item.Id}", Method.PUT);
+            request = new RestRequest($"/api/ReviewContract/{item.Id}", Method.PUT);
             request.AddJsonBody(item);
 
             request.AddCookie(App.CookieName, App.CookieValue);

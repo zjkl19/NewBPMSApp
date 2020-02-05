@@ -14,12 +14,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\ContractsReviewPage.xaml.cs">
+      <DependentUpon>ContractsReviewPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\ContractsCheckPage.xaml.cs">
       <DependentUpon>ContractsCheckPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Views\ContractsReviewPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\ContractsCheckPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

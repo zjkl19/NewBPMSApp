@@ -37,6 +37,7 @@ namespace NewBPMSApp
             //DependencyService.Register<AzureDataStore>();
 
             DependencyService.Register<LoginDataStore>();
+            DependencyService.Register<ContractReviewDataStore>();
 
             MainPage = new LoginPage();
 

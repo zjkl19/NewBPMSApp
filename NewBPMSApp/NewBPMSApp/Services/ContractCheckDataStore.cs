@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +60,8 @@ namespace NewBPMSApp.Services
             if (item == null || item.Id == null || !IsConnected)
                 return false;
 
+            IRestResponse resp = null;
+
             var serializedItem = JsonConvert.SerializeObject(item);
             var buffer = Encoding.UTF8.GetBytes(serializedItem);
             var byteContent = new ByteArrayContent(buffer);
@@ -73,10 +76,22 @@ namespace NewBPMSApp.Services
 
             //request.AddHeader("Content-type", "application/json");
             //request.AddParameter("Id", item.Id);
-            var resp =client1.Execute(request);
+
+            try
+            {
+                resp = await client1.ExecuteAsync(request);
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
 
             //var v = resp.Content;
-
+            if (resp == null)
+            {
+                return false;
+            }
 
             return resp.IsSuccessful;
             //return response.IsSuccessStatusCode;

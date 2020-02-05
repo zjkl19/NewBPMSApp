@@ -16,36 +16,19 @@ namespace NewBPMSApp.Views
     {
         LoginViewModel viewModel;
 
-        string EmailFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Email.txt");
-        string PasswordFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Password.txt");
-        string RememberMeFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RememberMe.txt");
-
 
         public LoginPage()
         {
             InitializeComponent();
             BindingContext = viewModel = new LoginViewModel();
 
-            if(!File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Email.txt")))
-            {
-                File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Email.txt"));
-                File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Password.txt"));
-                File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RememberMe.txt"));
-            }
-            if (File.ReadAllText(RememberMeFileName).Contains("1"))
-            {
-                EmailEntry.Text = File.ReadAllText(EmailFileName);
-                PasswordEntry.Text = File.ReadAllText(PasswordFileName);
-                RememberMeCheckBox.IsChecked = true;
-            }
-
         }
 
         async void OnLoginButton_Clicked(object sender, EventArgs e)
         {
-            string Email = EmailEntry.Text;
-            string Password = PasswordEntry.Text;
-            bool RememberMe = RememberMeCheckBox.IsChecked;
+            string Email = viewModel.Email;
+            string Password = viewModel.Password;
+            bool RememberMe = viewModel.RememberMe;
 
             var login = new Models.Login
             {
@@ -60,20 +43,16 @@ namespace NewBPMSApp.Views
             {
                 //账号、密码
 
-                File.WriteAllText(EmailFileName, EmailEntry.Text);
-                File.WriteAllText(PasswordFileName, PasswordEntry.Text);
-                File.WriteAllText(RememberMeFileName, "1");
-                //cookie Name,value
-                //editor.PutString("cookieName", cookieName);
-                //editor.PutString("cookieValue", cookieValue);
-                //remember me
-                //editor.PutBoolean("rememberPass", true);// editor.Commit();     
+                File.WriteAllText(App.EmailFileName, EmailEntry.Text);
+                File.WriteAllText(App.PasswordFileName, PasswordEntry.Text);
+                File.WriteAllText(App.RememberMeFileName, "1");
+    
             }
             else
             {
-                File.WriteAllText(EmailFileName, "");
-                File.WriteAllText(PasswordFileName, "");
-                File.WriteAllText(RememberMeFileName, "0");
+                File.WriteAllText(App.EmailFileName, "");
+                File.WriteAllText(App.PasswordFileName, "");
+                File.WriteAllText(App.RememberMeFileName, "0");
             }
 
             if (result)

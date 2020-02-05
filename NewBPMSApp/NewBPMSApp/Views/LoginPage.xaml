@@ -4,7 +4,8 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="NewBPMSApp.Views.LoginPage">
+             x:Class="NewBPMSApp.Views.LoginPage"
+             Title="{Binding Title}">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -16,12 +17,12 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="E-mail"/>
-            <Entry x:Name="EmailEntry"/>
+            <Entry x:Name="EmailEntry" Text="{Binding Email}"/>
             <Label Text="密码" />
             <Entry  
                 x:Name="PasswordEntry"
-                IsPassword="true"  Placeholder="Password"/>
-            <CheckBox x:Name="RememberMeCheckBox"/>
+                IsPassword="true"  Placeholder="Password"  Text="{Binding Password}"/>
+            <CheckBox x:Name="RememberMeCheckBox" IsChecked="{Binding RememberMe}"/>
             <Label Text="记住我？"/>
             <Button Margin="0,10,0,0" Text="登陆"
                                     Clicked="OnLoginButton_Clicked"

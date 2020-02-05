@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using NewBPMSApp.Services;
 using NewBPMSApp.Views;
+using System.IO;
 
 namespace NewBPMSApp
 {
@@ -17,6 +18,12 @@ namespace NewBPMSApp
             DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5000" : "http://localhost:5000";
 
         public static bool UseMockDataStore = false;
+
+        public static string EmailFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Email.txt");
+        public static string PasswordFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Password.txt");
+        public static string RememberMeFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RememberMe.txt");
+
+
 
         public App()
         {

@@ -17,7 +17,7 @@ namespace NewBPMSApp.ViewModels
 
         public ContractChecksViewModel()
         {
-            Title = "Browse";
+            Title = "合同校核";
             Items = new ObservableCollection<Contract>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 

@@ -7,6 +7,7 @@ using Xamarin.Forms;
 
 using NewBPMSApp.Models;
 using NewBPMSApp.IServices;
+using System.IO;
 
 namespace NewBPMSApp.ViewModels
 {
@@ -16,6 +17,19 @@ namespace NewBPMSApp.ViewModels
         public LoginViewModel()
         {
             Title = "登陆";
+
+            if (!File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Email.txt")))
+            {
+                File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Email.txt"));
+                File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Password.txt"));
+                File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RememberMe.txt"));
+            }
+            if (File.ReadAllText(App.RememberMeFileName).Contains("1"))
+            {
+                Email = File.ReadAllText(App.EmailFileName);
+                Password = File.ReadAllText(App.PasswordFileName);
+                RememberMe = true;
+            }
 
             //MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
             //{
@@ -37,6 +51,27 @@ namespace NewBPMSApp.ViewModels
         {
             get { return title; }
             set { SetProperty(ref title, value); }
+        }
+
+        string email = string.Empty;
+        public string Email
+        {
+            get { return email; }
+            set { SetProperty(ref email, value); }
+        }
+
+        string password = string.Empty;
+        public string Password
+        {
+            get { return password; }
+            set { SetProperty(ref password, value); }
+        }
+
+        bool rememberMe = false;
+        public bool RememberMe
+        {
+            get { return rememberMe; }
+            set { SetProperty(ref rememberMe, value); }
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,

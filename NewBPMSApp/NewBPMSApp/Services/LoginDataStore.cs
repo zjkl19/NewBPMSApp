@@ -14,7 +14,7 @@ namespace NewBPMSApp.Services
     public class LoginDataStore : ILoginDataStore
     {
         RestClient client;
-        RestRequest request = new RestRequest($"api/APIAccount/Login", Method.POST);
+        RestRequest request;
 
 
         public LoginDataStore()
@@ -33,7 +33,6 @@ namespace NewBPMSApp.Services
             //request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request = new RestRequest($"/api/Account?email={login.Email}&password={login.Password}", Method.POST);
             
-
             //http://218.66.5.89:8300/api/account?email=eamdfan@126.com&password=aQ!234
 
             //request.AddParameter("Email", login.Email);

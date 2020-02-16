@@ -28,16 +28,28 @@ namespace NewBPMSApp.Views
             });
         }
 
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        //async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        //{
+        //    var item = args.SelectedItem as DetailsContract;
+        //    if (item == null)
+        //        return;
+
+        //    //await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
+
+        //    // Manually deselect item.
+        //    ContractsListView.SelectedItem = null;
+        //}
+
+        async void OnItemTapped(object sender, SelectedItemChangedEventArgs args)
         {
             var item = args.SelectedItem as DetailsContract;
             if (item == null)
                 return;
 
-            //await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
+            await Navigation.PushAsync(new UserProductValuePage(new UserProductValueViewModel (item.UserProductValueViewModels)));
 
             // Manually deselect item.
-            ContractsListView.SelectedItem = null;
+            //ContractsListView.SelectedItem = null;
         }
 
         //async void AddItem_Clicked(object sender, EventArgs e)

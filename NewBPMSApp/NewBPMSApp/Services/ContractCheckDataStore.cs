@@ -14,18 +14,19 @@ namespace NewBPMSApp.Services
 {
     public class ContractCheckDataStore : ICommonDataStore<Contract>
     {
-        HttpClient client;
+        //HttpClient client;
         ContractCheck viewModels;
         IEnumerable<Contract> items;
-
-        RestClient client1;
+        readonly RestClient client;
         RestRequest request;
 
         public ContractCheckDataStore()
         {
-            client = new HttpClient();
-            client.BaseAddress = new Uri($"{App.BackendUrl}/");
-
+            //Obseleted code(using HttpClient)
+            //client = new HttpClient();
+            //client.BaseAddress = new Uri($"{App.BackendUrl}/");
+            client = new RestClient(App.BackendUrl);
+            
             viewModels = new ContractCheck();
 
             items = new List<Contract>();
@@ -34,9 +35,25 @@ namespace NewBPMSApp.Services
         bool IsConnected => Connectivity.NetworkAccess == NetworkAccess.Internet;
         public async Task<IEnumerable<Contract>> GetItemsAsync(bool forceRefresh = false)
         {
+            IRestResponse resp = null;
             if (forceRefresh && IsConnected)
             {
-                var json = await client.GetStringAsync($"api/CheckContract");
+                request = new RestRequest($"/api/CheckContract/", Method.GET);
+
+                request.AddCookie(App.CookieName, App.CookieValue);
+                try
+                {
+                    resp = await client.ExecuteAsync(request);
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+
+                //Obseleted code(using HttpClient)
+                //var json = await client.GetStringAsync($"api/CheckContract");
+                var json = resp.Content;
                 viewModels = await Task.Run(() => JsonConvert.DeserializeObject<ContractCheck>(json));
                 items = viewModels.ContractViewModels;
             }
@@ -46,9 +63,25 @@ namespace NewBPMSApp.Services
 
         public async Task<Contract> GetItemAsync(Guid id)
         {
+            IRestResponse resp = null;
             if (id != null && IsConnected)
             {
-                var json = await client.GetStringAsync($"api/item/{id}");
+                request = new RestRequest($"/api/CheckContract/", Method.GET);
+
+                request.AddCookie(App.CookieName, App.CookieValue);
+                try
+                {
+                    resp = await client.ExecuteAsync(request);
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                var json = resp.Content;
+
+                //Obseleted code(using HttpClient)
+                //var json = await client.GetStringAsync($"api/item/{id}");
                 return await Task.Run(() => JsonConvert.DeserializeObject<Contract>(json));
             }
 
@@ -62,13 +95,13 @@ namespace NewBPMSApp.Services
 
             IRestResponse resp = null;
 
-            var serializedItem = JsonConvert.SerializeObject(item);
-            var buffer = Encoding.UTF8.GetBytes(serializedItem);
-            var byteContent = new ByteArrayContent(buffer);
-
+            //Obseleted code(using HttpClient)
+            //var serializedItem = JsonConvert.SerializeObject(item);
+            //var buffer = Encoding.UTF8.GetBytes(serializedItem);
+            //var byteContent = new ByteArrayContent(buffer);
             //var response = await client.PutAsync(new Uri($"api/Contract/{item.Id}"), byteContent);
+            //client1 = new RestClient(App.BackendUrl);
 
-            client1 = new RestClient(App.BackendUrl);
             request = new RestRequest($"/api/CheckContract/{item.Id}", Method.PUT);
             request.AddJsonBody(item);
 
@@ -79,7 +112,7 @@ namespace NewBPMSApp.Services
 
             try
             {
-                resp = await client1.ExecuteAsync(request);
+                resp = await client.ExecuteAsync(request);
 
             }
             catch (Exception ex)

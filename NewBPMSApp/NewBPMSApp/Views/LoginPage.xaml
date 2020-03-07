@@ -16,6 +16,7 @@
 
     <ContentPage.Content>
         <StackLayout>
+            <Label Text="" HeightRequest="20"/>
             <Label Text="E-mail"/>
             <Entry x:Name="EmailEntry" Text="{Binding Email}"/>
             <Label Text="密码" />
@@ -31,6 +32,7 @@
                                     Clicked="OnLoginButton_Clicked"
                                     BackgroundColor="{StaticResource Primary}"
                                     TextColor="White" />
+            <Label Text="桥隧项目管理系统 APP，版本：v1.0"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

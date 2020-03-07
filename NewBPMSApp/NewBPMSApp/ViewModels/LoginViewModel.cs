@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using NewBPMSApp.Models;
 using NewBPMSApp.IServices;
 using System.IO;
+using System.Diagnostics;
 
 namespace NewBPMSApp.ViewModels
 {
@@ -18,18 +19,26 @@ namespace NewBPMSApp.ViewModels
         {
             Title = "登陆";
 
-            if (!File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Email.txt")))
+            try
             {
-                File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Email.txt"));
-                File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Password.txt"));
-                File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RememberMe.txt"));
+                if (!File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Email.txt")))
+                {
+                    File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Email.txt"));
+                    File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Password.txt"));
+                    File.Create(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RememberMe.txt"));
+                }
+                if (File.ReadAllText(App.RememberMeFileName).Contains("1"))
+                {
+                    Email = File.ReadAllText(App.EmailFileName);
+                    Password = File.ReadAllText(App.PasswordFileName);
+                    RememberMe = true;
+                }
             }
-            if (File.ReadAllText(App.RememberMeFileName).Contains("1"))
+            catch (Exception ex)
             {
-                Email = File.ReadAllText(App.EmailFileName);
-                Password = File.ReadAllText(App.PasswordFileName);
-                RememberMe = true;
+                Debug.WriteLine(ex.Message);
             }
+
 
             //MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
             //{

@@ -76,11 +76,11 @@ namespace NewBPMSApp.Views
 
             if (result)
             {
-                await DisplayAlert("服务器返回消息", "成功校核！", "确认");
+                await DisplayAlert("服务器返回消息", "成功审核！", "确认");
             }
             else
             {
-                await DisplayAlert("服务器返回消息", "校核失败！", "确认");
+                await DisplayAlert("服务器返回消息", "审核失败！", "确认");
             }
 
             viewModel.LoadItemsCommand.Execute(null);

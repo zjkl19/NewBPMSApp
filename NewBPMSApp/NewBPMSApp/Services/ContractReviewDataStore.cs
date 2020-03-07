@@ -14,18 +14,21 @@ namespace NewBPMSApp.Services
 {
     public class ContractReviewDataStore : IContractReviewDataStore<DetailsContract,Contract>
     {
-        HttpClient client;
+        //Obseleted code(using HttpClient)
+        //HttpClient client;
         ContractReview viewModels;
         IEnumerable<DetailsContract> items;
 
-        RestClient client1;
+        RestClient client;
         RestRequest request;
 
         public ContractReviewDataStore()
         {
-            client = new HttpClient();
-            client.BaseAddress = new Uri($"{App.BackendUrl}/");
+            //Obseleted code(using HttpClient)
+            //client = new HttpClient();
+            //client.BaseAddress = new Uri($"{App.BackendUrl}/");
 
+            client = new RestClient(App.BackendUrl);
             viewModels = new ContractReview();
 
             items = new List<DetailsContract>();
@@ -34,9 +37,24 @@ namespace NewBPMSApp.Services
         bool IsConnected => Connectivity.NetworkAccess == NetworkAccess.Internet;
         public async Task<IEnumerable<DetailsContract>> GetItemsAsync(bool forceRefresh = false)
         {
+            IRestResponse resp = null;
             if (forceRefresh && IsConnected)
             {
-                var json = await client.GetStringAsync($"api/ReviewContract");
+                request = new RestRequest($"/api/ReviewContract/", Method.GET);
+
+                request.AddCookie(App.CookieName, App.CookieValue);
+                try
+                {
+                    resp = await client.ExecuteAsync(request);
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+
+                //var json = await client.GetStringAsync($"api/ReviewContract");
+                var json = resp.Content;
                 viewModels = await Task.Run(() => JsonConvert.DeserializeObject<ContractReview>(json));
                 items = viewModels.DetailsContractViewModels;
             }
@@ -63,13 +81,13 @@ namespace NewBPMSApp.Services
 
             IRestResponse resp = null;
 
-            var serializedItem = JsonConvert.SerializeObject(item);
-            var buffer = Encoding.UTF8.GetBytes(serializedItem);
-            var byteContent = new ByteArrayContent(buffer);
+            //var serializedItem = JsonConvert.SerializeObject(item);
+            //var buffer = Encoding.UTF8.GetBytes(serializedItem);
+            //var byteContent = new ByteArrayContent(buffer);
 
             //var response = await client.PutAsync(new Uri($"api/Contract/{item.Id}"), byteContent);
 
-            client1 = new RestClient(App.BackendUrl);
+            client = new RestClient(App.BackendUrl);
             request = new RestRequest($"/api/ReviewContract/{item.Id}", Method.PUT);
             request.AddJsonBody(item);
 
@@ -80,7 +98,7 @@ namespace NewBPMSApp.Services
 
             try
             {
-                resp = await client1.ExecuteAsync(request);
+                resp = await client.ExecuteAsync(request);
 
             }
             catch (Exception ex)
